@@ -1,0 +1,41 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+use statistics;
+
+my @vals = &squiggle(15);
+my @fma = &statistics::fma(4, @vals);
+my @sma = &statistics::sma(4, @vals);
+my ($R, $fstats, $sstats) = &statistics::correlation(\@fma, \@sma);
+printf "R = %.3f, \n\tFib: (mean: %.4f, stdev: %.4f), \n\tSma: (mean: %.4f, stdev: %.4f)\n", $R, @{$fstats}, @{$sstats};
+
+sub squiggle {
+	my $n = shift;
+	my @vals = (1000);
+	while  (@vals < $n) {
+		my $c = rand()/10000;
+		if (&randomint(2)) {
+			$c += 1;
+		}else {
+			$c = 1-$c;
+		}
+		push @vals, $vals[-1]*$c;
+	}	
+	return @vals;
+}
+
+sub randomVals {
+	my $n = shift;
+	return map{&random()} (1 .. $n);
+}
+
+sub random {
+	my $x = rand() * 10**5;
+	return $x * (1 - 2 * &randomint(2))
+}
+
+sub randomint {
+	my $m = shift;
+	my $x = int(rand() * 10**10);
+	return $x % $m;
+}

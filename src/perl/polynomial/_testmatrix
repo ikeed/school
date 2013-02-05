@@ -1,0 +1,31 @@
+#! /usr/bin/perl -d
+use matrix;
+use polynomial;
+
+sub randomPoly {
+	my $degree = shift;
+	my @poly = map{&random(5) * (1 - 2 * ($_ % 2))} (1 .. $degree);
+	return \@poly;
+}
+
+sub random {
+	no bignum;
+	return (int(rand()*10000) % 17) . "." . (int(rand()*10000) % 17);
+}
+
+my @points;
+my $poly = &randomPoly(10);
+foreach (-11 .. 11) {
+	my $x = &random(4);
+	my $y = &polynomial::evaluate($poly, $x);
+	push @points, [$x, $y];
+}
+my $poly2 = &matrix::fitPoints(@points);
+my $MSE = 0;
+foreach (0 .. &polynomial::degree($poly2)) {
+	printf "%f, %f\n", $poly->[$_], $poly2->[$_];
+	$MSE += ($poly->[$_] - $poly2->[$_])**2;
+}
+$MSE /= scalar(@{$poly});
+printf "error: %f\n", $MSE**0.5;
+
