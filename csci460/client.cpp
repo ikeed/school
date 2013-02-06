@@ -31,18 +31,22 @@ bool parse(string line, string & comm, string & para)
 
 void showHelp() {
 	cout << "\n\thelp: to display the help information of the system.\n";
-	cout << "\n\tlist: to list the names (only) of all the client programs currently registered with the server.\n";
-	cout << "\n\tpostcard: to send a public message to one or multiple clients. This command will ask user to enter all the receivers'\n"
-		<< "\t\tnames in a line separated by spaces and then a one-line message \n\t\tthat could have any ASCII characters in it.\n "
-		<< "\t\tThe postcard message would be sent to the server and let the server \n\t\tpass the message to all the receivers. \n";
+	cout << "\n\tlist: to list the names (only) of all the client programs currently\n\t\t"
+		<< " registered with the server.\n";
+	cout << "\n\tpostcard: to send a public message to one or multiple clients. This"
+		<< "\n\t\tcommand will ask user to enter all the receivers' names in a "
+		<< "\n\t\tline separated by spaces and then a one-line message that could "
+		<< "\n\t\thave any ASCII characters in it.  The postcard message would be "
+		<< "\n\t\tsent to the server and let the server pass the message to all the "
+		<< "\n\t\treceivers. \n";
 	cout << "\n\tprivatemessage: to send a private message to one client program. This "
-		<< "\t\tcommand will ask for one receiver's name and a \n"
-		<< "\t\tone-line message that could have any ASCII characters in it. \n"
-		<< "\t\tThen instead of letting the server to relay the message,\n "
-		<< "the sender contacts the server to get the registered address and port number of the receiver and then establish a \n"
-		<< "direct connection with the receiver to send the message.\n" << endl;
-	cout << "quit: to de-register from the server and terminate this client program only. Note that the server should remain running.\n"
-		<< endl;
+		<< "\n\t\tcommand will ask for one receiver's name and a one-line message "
+		<< "\n\t\tthat could have any ASCII characters in it. Then instead of letting"
+		<< "\n\t\tthe server to relay the message, the sender contacts the server to "
+		<< "\n\t\tget the registered address and port number of the receiver and then "
+		<< "\n\t\testablish a direct connection with the receiver to send the message.\n";
+	cout << "\n\tquit: to de-register from the server and terminate this client program only"
+		<< "\n\t\t. Note that the server should remain running.\n" << endl;
 }
 
 
