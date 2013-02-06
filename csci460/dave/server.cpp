@@ -108,6 +108,7 @@ int main()
                   users[i].name = users[userSize].name;
                   users[i].sock = users[userSize].sock;
                } else {
+		  cout << "Received: " << buf << endl;
                   parse(buf, name, msg);
                   msg = users[i].name + msg;
                   for(int j = 0; j < userSize; j++) {

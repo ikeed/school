@@ -10,13 +10,7 @@
 
 using namespace std;
 
-int sendMessage(int sock, string msg);
-
-int sendPostCard(int sock, string recips, string msg) {
-	return 1;
-}
-
-bool parse(string line, string & comm, string & para)
+void parse(string line, string & comm, string & para)
 {
    if (line == "") {
       comm = "";
@@ -26,26 +20,7 @@ bool parse(string line, string & comm, string & para)
       iss >> comm;
       getline(iss, para);
    }
-   return true;
 }
-
-void showHelp() {
-	cout << "\n\thelp: to display the help information of the system.\n";
-	cout << "\n\tlist: to list the names (only) of all the client programs currently registered with the server.\n";
-	cout << "\n\tpostcard: to send a public message to one or multiple clients. This command will ask user to enter all the receivers'\n"
-		<< "\t\tnames in a line separated by spaces and then a one-line message \n\t\tthat could have any ASCII characters in it.\n "
-		<< "\t\tThe postcard message would be sent to the server and let the server \n\t\tpass the message to all the receivers. \n";
-	cout << "\n\tprivatemessage: to send a private message to one client program. This "
-		<< "\t\tcommand will ask for one receiver's name and a \n"
-		<< "\t\tone-line message that could have any ASCII characters in it. \n"
-		<< "\t\tThen instead of letting the server to relay the message,\n "
-		<< "the sender contacts the server to get the registered address and port number of the receiver and then establish a \n"
-		<< "direct connection with the receiver to send the message.\n" << endl;
-	cout << "quit: to de-register from the server and terminate this client program only. Note that the server should remain running.\n"
-		<< endl;
-}
-
-
 int getConnected(char *host, int port)
 {
    int sock;
@@ -71,16 +46,6 @@ int getConnected(char *host, int port)
    }
 }
 
-string promptLine(string prompt) {
-	return "";
-}
-
-
-string promptWSList(string prompt) {
-	return "";
-}
-
-
 int main(int argc, char *argv[])
 {
    fd_set readfield;
@@ -88,7 +53,6 @@ int main(int argc, char *argv[])
    string comm;
    string msg;
    string line;
-   string recips;
    int nb;
    char buf[500];
 
@@ -137,27 +101,18 @@ int main(int argc, char *argv[])
             parse(line, comm, msg);
             if (comm == "quit") {
                quit = true;
-            }else if (comm == "help") {
-		showHelp();
-            }else if (comm == "send") {
-	       sendMessage(sock, msg);
-	    }else if (comm == "list") {
-		sendMessage(sock, comm);
-	    }else if (comm == "postcard") {
-		recips = promptWSList("Please Enter Receivers' names separated by whitespace");
-		if (recips > "") {
-			line = promptLine("Please Enter the message (one line only)");
-			if (line > "") {
-				sendPostCard(sock, recips, line);
-			}
-		}
-	    }else if (comm == "privatemessage") {
-		// TODO
+            } else if (comm == "send") {
+               write(sock, msg.c_str(), msg.length()+1);
+               cout << name << "> ";
+               cout.flush();
+            } else if (comm == "") {
+               cout << name << "> ";
+               cout.flush();
             } else {
                cout << "Unknown command\n";
+               cout << name << "> ";
+               cout.flush();
             }
-            cout << name << "> ";
-            cout.flush();
          }
 
          if (FD_ISSET(sock, &readfield)) {  // Input from socket
@@ -166,8 +121,6 @@ int main(int argc, char *argv[])
             if (buf[0] == '\0') {
                cout << "\nShutting down by the server\n";
                quit = true;
-	    }else if (parse(line, comm, msg)) {
-		
             } else {
                buf[bytes] = '\0';
                cout << "\nFrom " << buf << endl;
@@ -182,10 +135,5 @@ int main(int argc, char *argv[])
    cout << "Good bye\n";
 
    return 0;
-}
-
-int sendMessage(int sock, string msg) {
-	msg = "MSG:" + msg;
-	write(sock, msg.c_str(), msg.length()+1);
 }
 

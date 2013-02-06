@@ -1,10 +1,7 @@
-
-threadTest:	threadex.h threadTest.C
-	g++ -Wall -o threadTest threadTest.C -pthread
-
+client:	client.cpp
+	g++ -o client client.cpp
+server:	server.cpp
+	g++ -o server server.cpp
 clean:
-	rm -f core a.out threadTest
-
-print:
-	lpr -P csci-lq -o prettyprint threadex.h threadTest.C
+	rm -f client server
 
