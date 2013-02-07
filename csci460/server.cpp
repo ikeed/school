@@ -5,8 +5,9 @@
 #include <netdb.h>
 #include <iostream>
 #include <sstream>
+#include <arpa/inet.h>
 
-#include <stdio.h>
+#include "sox.h"
 
 #define BUFLEN 500
 #define HOSTLEN 80
@@ -17,15 +18,21 @@ using namespace std;
 struct Interface {
    string name;
    int sock;
+   string address;
+   int portNo;
 };
 
-int  getConnected(sockaddr_in &server);
+int  findInterfaceByName(Interface *users, int max, string name);
 void prompt();
 int  getNextEvent(int sock, Interface *users, int userSize, fd_set &read);
-int  acceptConnection(int sock, Interface *users, int &max, sockaddr_in server);
+int  addConnection(int sock, Interface *users, int &max, sockaddr_in server);
 bool processCommand(bool &shutdown);
 void processMessage(Interface *users, int cur, int &max);
-void parse(char buf[], string & name, string & msg);
+void processIPRequest(string name, Interface *users, int cur, int max);
+void processPostCard(string contents, Interface *users, int cur, int max);
+void processListRequest(Interface *users, int cur, int max);
+void processQuitRequest(Interface *users, int cur, int &max);
+void parse(string buf, string & type, string & contents);
 void showRunning(sockaddr_in server);
 void tearDown(int sock, Interface *users, int userSize);
 
@@ -39,27 +46,28 @@ int main()
 	fd_set read;
 	bool shutdown = false;
 
-	if (!(sock = getConnected(server))) {
+	if (!(sock = getListeningSocket(server))) {
 		return 1;
 	}
-
+	showRunning(server);
 	prompt();
 
 	while (!shutdown) {
-		if (getNextEvent(sock, users, userSize, read)) {
-			if (FD_ISSET(0, &read) && processCommand(shutdown)) {
-				prompt();
-			}
+		if (!getNextEvent(sock, users, userSize, read)) {
+			continue;
+		}
+		if (FD_ISSET(0, &read) && processCommand(shutdown)) {
+			prompt();
+		}
 
-			for(int i = 0; i < userSize; i++) {
-				if (FD_ISSET(users[i].sock, &read)) {
-					processMessage(users, i, userSize);
-				}
+		for(int i = 0; i < userSize; i++) {
+			if (FD_ISSET(users[i].sock, &read)) {
+				processMessage(users, i, userSize);
 			}
+		}
 
-			if (FD_ISSET(sock, &read)) {
-				acceptConnection(sock, users, userSize, server);
-			}
+		if (FD_ISSET(sock, &read)) {
+			addConnection(sock, users, userSize, server);
 		}
 	}
 
@@ -69,35 +77,6 @@ int main()
 	return 0;
 }
 
-int getConnected(sockaddr_in &server) {
-   int sock = socket(AF_INET, SOCK_STREAM, 0);
-   int length;
- 
-   if (sock < 0) {
-      cerr << "Can't open stream socket\n";
-      return 0;
-   }
-
-   server.sin_family = AF_INET;
-   server.sin_addr.s_addr = INADDR_ANY;
-   server.sin_port = 0;
-
-   if (bind(sock, (const sockaddr *)&server, sizeof(server)) < 0) {
-      cerr << "Can't binding stream socket\n";
-      return 0;
-   }
-
-   length = sizeof(server);
-   if (getsockname(sock, (sockaddr *)&server, (socklen_t *)&length) < 0) {
-      cerr << "Can't get socket name\n";
-      return 0;
-   }
-   listen(sock, MAX_USER);
-   showRunning(server);
-
-   return sock;
-
-}
 
 void prompt() {
 	cout << "server> ";
@@ -117,26 +96,82 @@ bool processCommand(bool &shutdown) {
 }
 
 void processMessage(Interface *users, int cur, int &max) {
-	char buf[BUFLEN+1];
-	buf[0] = '\0';
-	string msg, name;
+	string msg = socketRead(users[cur].sock);
+	string type, contents;
 
-	recv(users[cur].sock, buf, BUFLEN, 0);
-
-	if (buf[0] == '\0') {
-		close(users[cur].sock);
-		max--;
-		users[cur].name = users[max].name;
-		users[cur].sock = users[max].sock;
+	if (msg.length() == 0) {
+		processQuitRequest(users, cur, max);
 	} else {
-		parse(buf, name, msg);
-		msg = users[cur].name + msg;
-		for(int j = 0; j < max; j++) {
-			if (users[j].name == name) {
-				write(users[j].sock, msg.c_str(), msg.length());
-		     	}
+		parse(msg, type, contents);
+		if (type == "PostCard") {
+			processPostCard(contents, users, cur, max);
+		}else if (type == "IPRequest") {
+			processIPRequest(contents, users, cur, max);
+		}else if (type == "List") {
+			processListRequest(users, cur, max);
+		}else if (type == "Quit") {
+			processQuitRequest(users, cur, max);	
 		}
 	}
+}
+
+void processIPRequest(string name, Interface *users, int cur, int max) {
+	string addr;
+	ostringstream oss;
+	int j;
+
+	if ((j = findInterfaceByName(users, max, name)) >= 0) {
+		oss << users[j].portNo;
+		addr = users[j].address + " " + oss.str();
+		addr = "IPRequest " + addr;
+		socketSend(users[cur].sock, addr);
+		//write(users[cur].sock, addr.c_str(), addr.length());
+	}
+}
+
+void processListRequest(Interface *users, int cur, int max) {
+	string names;
+	Interface *p = users;
+
+	for (int i = 0; i < max; i++, p++) {
+		if (names > "") {
+			names += " ";
+		}
+		names += p->name;
+	}
+	names = "List " + names;
+	socketSend(users[cur].sock, names);
+	//write(users[cur].sock, names.c_str(), names.length());
+}	
+
+void processPostCard(string contents, Interface *users, int cur, int max) {
+	istringstream iss(contents);
+	string msg, line, recip;
+	int j;
+
+	getline(iss, line);
+	getline(iss, msg);
+
+	istringstream recipients(line);
+
+	msg = "PostCard " + users[cur].name + ":\t" + msg;
+
+	while (recipients.rdbuf()->in_avail()) {
+		recipients >> recip;
+		if ((j = findInterfaceByName(users, max, recip)) >=0) {
+			socketSend(users[j].sock, msg);
+			//write(users[j].sock, msg.c_str(), msg.length());
+		}
+	} 
+}
+
+
+
+void processQuitRequest(Interface *users, int cur, int &max) {
+	close(users[cur].sock);
+	max--;
+	users[cur].name = users[max].name;
+	users[cur].sock = users[max].sock;
 }
 
 int findInterfaceByName(Interface *users, int max, string name) {
@@ -148,34 +183,74 @@ int findInterfaceByName(Interface *users, int max, string name) {
     return -1;
 }
 	
+void rejectConnection(int sock, string err) {
+	cout << "Rejected connection: " << err << endl;
+	socketSend(sock, err);
+	//write(sock, err.c_str(), err.length());
+	close(sock);
+}
 
-int acceptConnection(int sock, Interface *users, int &max, sockaddr_in server) {
-	char buf[BUFLEN] = "";
-	int length = sizeof(server);
+int initInterface(Interface *p, int sock, string msg, sockaddr_in server) {
+	char addy[INET_ADDRSTRLEN+1];
 
-        users[max].sock = accept(sock, (sockaddr *)&server, (socklen_t *)&length);
-        recv(users[max].sock, buf, BUFLEN, 0);
-        users[max].name = buf;
-        if (findInterfaceByName(users, max, buf) >= 0) {       
-		close(users[max].sock);
+	istringstream iss(msg);
+
+	p->sock = sock;
+	if (!iss.rdbuf()->in_avail()) {
 		return 0;
-        } else {
-		write(users[max].sock, "OK", 2);
-               	max++;
 	}
+	iss >> p->name;
+	if (!iss.rdbuf()->in_avail()) {
+		return 0;
+	}
+
+	iss >> p->portNo;
+
+	inet_ntop(AF_INET, &(server.sin_addr), addy, INET_ADDRSTRLEN);	
+	p->address = addy;
+	cout << "Added new connection: " << p->address << ":" << p->portNo << " " << p->name << endl;
 	return 1;
 }
 
-void parse(char buf[], string & name, string & msg)
+
+int addConnection(int sock, Interface *users, int &max, sockaddr_in server) {
+	int newSock;
+	string msg;
+	int length = sizeof(server);
+
+	if (0 > (newSock = accept(sock, (sockaddr *)&server, (socklen_t *)&length))) {
+		cerr << "Unable to accept connection" << endl;
+		return 0;
+	}else if (max >= MAX_USER) {
+		rejectConnection(newSock, "ERROR: Too many users.  Come back tomorrow.");
+		return 0;
+	}
+	msg = socketRead(newSock);
+	
+	if (!initInterface(&users[max], newSock, msg, server)) {
+		rejectConnection(newSock, "ERROR: Malformed registration request");
+		return 0;
+	}
+
+        if (findInterfaceByName(users, max, users[max].name) >= 0) { 
+		rejectConnection(newSock, "ERROR: Username taken.  Be more creative!");
+		return 0;
+        }
+	socketSend(users[max++].sock, "OK"); 
+	//write(users[max++].sock, "OK", 2);
+	return 1;
+}
+
+void parse(string buf, string & type, string & contents)
 {
 	string line = buf;
 	if (line == "") {
-		name = "";
-		msg = "";
+		type = "";
+		contents = "";
 	} else {
 		istringstream iss(line);
-		iss >> name;
-		getline(iss, msg);
+		iss >> type;
+		contents = iss.str();
 	}
 }
 
