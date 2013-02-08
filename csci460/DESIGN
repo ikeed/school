@@ -1,0 +1,24 @@
+Course: CSCI460
+Instructor: Huizhu Liu
+Student: Craig Burnett
+Assignment: 1
+Design Documentation
+
+The design is fairly straightforward.  Since both the client and the server
+need both inbound and outbound sockets, I put some helper functions in a module called
+sox.cpp.  getListeningSocket can be used to reserve a socket of SOCK_STREAM or SOCK_DGRAM type.
+
+sockSend is used for sending data down a socket.  An end-of-text character is appended to the end of each message.
+This was done so that the receiver can split messages out of the stream.
+
+sockRead is its counterpart.  It splits out individual messages delimited by ETX characters from the stream and 
+puts them in a queue which is returned.
+
+sockSend and sockRead work in concert to insert/remove delimiters so the entire process is transparen to their callers.
+
+Both client and server are event-driven.  So any commands entered or inbound messages cause an interrupt which is
+detected by the getNextEvent subroutine.  
+
+The type of event is then determined and handled by a helper function.
+
+

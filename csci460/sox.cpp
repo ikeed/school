@@ -1,18 +1,22 @@
 #include <iostream>
 #include <arpa/inet.h>
-
+#include <sstream>
 #include "sox.h"
+#include <stdio.h>
+#include <errno.h>
 
 using namespace std;
 #define MAX_BACKLOG 50
 #define BUFLEN 500
 
-int getListeningSocket(sockaddr_in &server) {
-   int sock = socket(AF_INET, SOCK_STREAM, 0);
+#define ETX 0x03
+
+int getListeningSocket(sockaddr_in &server, int type) {
+   int sock = socket(AF_INET, type, 0);
    int length;
  
    if (sock < 0) {
-      cerr << "Can't open stream socket\n";
+      cerr << "Can't open socket\n";
       return 0;
    }
 
@@ -38,16 +42,29 @@ int getListeningSocket(sockaddr_in &server) {
 
 
 int socketSend(int sock, string message) {
-	cout << "Sent: " << message << endl;
+	message = message + ( (char) ETX);
 	return write(sock, message.c_str(), message.length());
 }
 
-string socketRead(int sock) {
+queue<string> socketRead(int sock) {
 	char buf[BUFLEN+1];
 	int bytes = read(sock, buf, BUFLEN);
+	queue<string> q;
+	string s;
+	char delim = ETX;
+
+	if (bytes <= 0) {
+		perror("socketRead");
+		return q;
+	}
 
 	buf[bytes] = '\0';
-	cout << "Recv: " << buf << endl;
-	return (string) buf;
+	istringstream ss(buf);
+	while (ss.rdbuf()->in_avail()) {
+		getline(ss, s, delim);
+		q.push(s);	
+	}
+	
+	return q;
 }
-		
+

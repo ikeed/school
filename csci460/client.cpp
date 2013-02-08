@@ -7,16 +7,72 @@
 #include <netdb.h>
 #include <sstream>
 #include <stdlib.h>
-
+#include <queue>
 #include "sox.h"
+#include <arpa/inet.h>
+#include "mystring.h"
 
 using namespace std;
 
 #define BUFLEN 500
 
 
+string promptLine(string prompt);
+string promptToken(string prompt);
+string promptWSList(string prompt);
+void showHelp();
+int sendPostCard(int sock, string recips, string msg);
+void processCommand(bool &quit, int serverSock, queue<string> &pendingPrivateMessages);
+void processIPResponse(string myname, string msg, queue<string> &pendingPrivateMessages);
+void processListResponse(string msg);
+void FD_Reset(struct timeval &wait, fd_set &readfield, int serverSock, int peerSock);
+int getNextEvent(fd_set &readfield, struct timeval &wait);
+int connectToServer(const char *host, int port, int type);
+int parseArgs(int argc, char **argv, string &server, int &port, string &name);
+int processRegResponse(string msg);
+void showUsage(string me);
+string int2String(int a);
+int init(int argc, char **argv, string &name, int &serverSock, int &peerSock);
+void showPrompt(string name);
+void tearDown(int serverSock, int peerSock);
+void processServerMessage(bool &quit, string name, int serverSock, queue<string> &pendingPrivateMessages);
+void processPeerMessage(int peerSock);
 
-int sendMessage(int sock, string msg);
+
+int main(int argc, char *argv[])
+{
+   fd_set readfield;
+   struct timeval wait;
+   string server, name, msg;
+   int serverSock, peerSock;
+   bool quit = false;
+   queue<string> pendingPrivateMessages;
+
+   if (!init(argc, argv, name, serverSock, peerSock)) {
+	return 1;
+   }
+   showPrompt(name);
+  
+   while (!quit) {
+      FD_Reset(wait, readfield, serverSock, peerSock);
+      if (getNextEvent(readfield, wait)) {
+         if (FD_ISSET(0, &readfield)) {  // Input from stdin
+	    processCommand(quit, serverSock, pendingPrivateMessages);
+	 }
+
+         if (FD_ISSET(serverSock, &readfield)) {  // Input from server socket
+		processServerMessage(quit, name, serverSock, pendingPrivateMessages);
+         }else if (FD_ISSET(peerSock, &readfield)) { // Input from peer socket
+		processPeerMessage(peerSock);
+	 }
+         showPrompt(name); 
+      }
+   }
+
+   tearDown(serverSock, peerSock);
+   return 0;
+}
+
 
 string promptLine(string prompt) {
 	string s;
@@ -26,6 +82,11 @@ string promptLine(string prompt) {
 	return s;	
 }
 
+string promptToken(string prompt) {
+	string s = promptLine(prompt);
+	parse(s, s, prompt);
+	return s;
+}
 
 string promptWSList(string prompt) {
 	string s, tmp;
@@ -64,26 +125,12 @@ void showHelp() {
 		<< "\n\t\t. Note that the server should remain running.\n" << endl;
 }
 
-bool parse(string line, string & type, string & content)
-{
-   string tmp;
-   if (line == "") {
-	type = "";
-	content = "";
-	return false;
-   } else {
-	istringstream iss(line);
-	iss >> type;
-	content = iss.str();
-   }
-   return true;
-}
 
 int sendPostCard(int sock, string recips, string msg) {
 	return socketSend(sock, "PostCard " + recips + "\n" + msg);
 }
 
-void processCommand(bool &quit, int serverSock) {
+void processCommand(bool &quit, int serverSock, queue<string> &pendingPrivateMessages) {
     string line, comm, msg;
     string recips;
 
@@ -93,10 +140,8 @@ void processCommand(bool &quit, int serverSock) {
        quit = true;
     }else if (comm == "help") {
 	showHelp();
-    }else if (comm == "send") {
-       sendMessage(serverSock, msg);
     }else if (comm == "list") {
-	sendMessage(serverSock, comm);
+	socketSend(serverSock, "List");
     }else if (comm == "postcard") {
 	recips = promptWSList("Please Enter Receivers' names separated by whitespace");
 	if (recips > "") {
@@ -106,25 +151,56 @@ void processCommand(bool &quit, int serverSock) {
 		}
 	}
     }else if (comm == "privatemessage") {
-	// TODO
+	if ((recips = promptToken("Please enter the recipient's name:")).length() == 0) {
+		return;
+	}else if ((comm = promptLine("Please enter the message:")).length() == 0) {
+		return;
+	}
+	pendingPrivateMessages.push(comm);
+	line = "IPRequest " + recips;
+	socketSend(serverSock, line);
     } else {
        cout << "Unknown command\n";
     }
 }
 
+
 void processPostCard(string msg) {
 	cout << msg << endl;  // just leave it how the server formatted it.
 }
 
-void processIPResponse(string msg) {
-	
+void processIPResponse(string myname, string msg, queue<string> &pendingPrivateMessages) {
+	string host, port, ppm;
+	int sock, iport;
+
+	if (!pendingPrivateMessages.size()) {
+		cerr << "bailing out of IPResponse.  no pending messages" << endl;
+		return;
+	}
+	if (!parse(msg, host, port)) {
+		cerr << "Failed to send private message" << endl;
+		pendingPrivateMessages.pop();	
+		return;
+	}
+	iport = atoi(port.c_str());
+	if ((sock = connectToServer(host.c_str(), iport, SOCK_DGRAM)) < 0) {
+		cerr << "Couldn't connect to " << host << ":" << port << " for private message." << endl;
+		pendingPrivateMessages.pop();
+		return;
+	}
+	ppm = pendingPrivateMessages.front();
+	ppm = "PeerMessage " + myname + " " + ppm;
+	pendingPrivateMessages.pop(); 
+	socketSend(sock, ppm);
 }
 
 void processListResponse(string msg) {
 	string usr;
 	cout << "\nUsers online right now:\n";
-	while (parse(msg, usr, msg)) {
-		cout << usr << endl;
+	istringstream iss(msg);
+	while (iss.rdbuf()->in_avail()) {
+		iss >> usr;
+		cout << "\t" << usr << endl;
 	}
 }
 
@@ -144,9 +220,7 @@ int getNextEvent(fd_set &readfield, struct timeval &wait) {
 }
 
 
-
-
-int connectToServer(const char *host, int port)
+int connectToServer(const char *host, int port, int type)
 {
    int sock;
    struct sockaddr_in server;
@@ -158,7 +232,7 @@ int connectToServer(const char *host, int port)
    server.sin_family = hp->h_addrtype;
    server.sin_port = htons(port);
 
-   sock = socket(AF_INET, SOCK_STREAM, 0);
+   sock = socket(AF_INET, type, 0);
    if (sock < 0) {
       cerr << "Opening stream socket error\n";
       return -1;
@@ -211,33 +285,41 @@ int init(int argc, char **argv, string &name, int &serverSock, int &peerSock) {
    int port;
    sockaddr_in sa;
    string msg, server;
+   queue<string> msgs;
+   char buf[BUFLEN+1];
 
    if (!parseArgs(argc, argv, server, port, name)) {
 	showUsage(argv[0]);
 	return 0;
    }
 
-   if ((serverSock = connectToServer(server.c_str(), port)) < 0) {
-      cerr << "Can't connect to server\n";
-      return 0;
-   }
-
-   if ((peerSock = getListeningSocket(sa)) < 0) {
+   if ((peerSock = getListeningSocket(sa, SOCK_DGRAM)) < 0) {
 	cerr << "Can't open a listening socket for peer-to-peer messaging" << endl;
 	close(serverSock);
 	return 0;
    }
+   
+   if ((serverSock = connectToServer(server.c_str(), port, SOCK_STREAM)) < 0) {
+      cerr << "Can't connect to server\n";
+      return 0;
+   }
 
-   msg = name + " " + int2String(peerSock);
+   gethostname(buf, BUFLEN);
+   msg = name + " " + buf + " " + int2String(ntohs(sa.sin_port));
    socketSend(serverSock, msg);
-   if (!processRegResponse(socketRead(serverSock))) {
+   msgs = socketRead(serverSock);
+   if (msgs.size() == 0) {
+	return 0;
+   }
+   msg = msgs.front();
+   if (!processRegResponse(msg)) {
 	close(serverSock);
 	return 0;
    }
    return 1;
 }
 
-void prompt(string name) {
+void showPrompt(string name) {
    cout << name << "> ";
    cout.flush();
 }
@@ -252,69 +334,49 @@ void tearDown(int serverSock, int peerSock) {
 }
 
 
-void processServerMessage(bool &quit, int serverSock) {
-    string msg, type, name;
-    
-    msg = socketRead(serverSock);
+void processServerMessage(bool &quit, string name, int serverSock, queue<string> &pendingMessages) {
+    string msg, type, content;
+    queue<string> msgs = socketRead(serverSock);
 
-    if (msg.length() == 0) {
+    if (msgs.size() == 0) {
        cout << "\nShutting down by the server\n";
        quit = true;
-    }else if (parse(msg, type, msg)) {
-	if (type == "PostCard") {
-		processPostCard(msg);
-	}else if (type == "IPRequest") {
-		processIPResponse(msg);
-	}else if (type == "List") {
-		processListResponse(msg);
+    }else {
+	while(msgs.size()) {
+		msg = msgs.front();
+		msgs.pop();
+		
+		if (parse(msg, type, content)) {
+			if (type == "PostCard") {
+				processPostCard(content);
+			}else if (type == "IPRequest") {
+				processIPResponse(name, content, pendingMessages);
+			}else if (type == "List") {
+				processListResponse(content);
+			}else {
+			        cerr << "\nUnknown message format: " << msg << endl;
+			}
+		}
 	}
-    } else {
-       cerr << "\nUnknown message format: " << msg << endl;
     }
 }
 
 void processPeerMessage(int peerSock) {
-	string type, name;
-	string msg = socketRead(peerSock);
+	string type, name, msg, content;
+	queue<string> msgs = socketRead(peerSock);
+
+	if (msgs.size() == 0) {
+		cerr << "Could not read from peer socket!" << endl;
+		return;
+	}
+	while (msgs.size()) {
+		msg = msgs.front();
+		msgs.pop();
+		if (parse(msg, type, content) && type == "PeerMessage") {
+			if (parse(content, name, msg)) {
+				cout << name << ":(private)\t" << msg << endl;
+			}
+		}
+	}
 }	
-
-int main(int argc, char *argv[])
-{
-   fd_set readfield;
-   struct timeval wait;
-   string server, name, msg;
-   int serverSock, peerSock;
-   bool quit = false;
-
-   if (!init(argc, argv, name, serverSock, peerSock)) {
-	return 1;
-   }
-   prompt(name);
-  
-   while (!quit) {
-      FD_Reset(wait, readfield, serverSock, peerSock);
-      if (getNextEvent(readfield, wait)) {
-         if (FD_ISSET(0, &readfield)) {  // Input from stdin
-	    processCommand(quit, serverSock);
-            prompt(name); 
-	}
-
-        if (FD_ISSET(serverSock, &readfield)) {  // Input from server socket
-		processServerMessage(quit, serverSock);
-		prompt(name);
-        }else if (FD_ISSET(peerSock, &readfield)) { // Input from peer socket
-		processPeerMessage(peerSock);
-		prompt(name);
-	}
-      }
-   }
-
-   tearDown(serverSock, peerSock);
-   return 0;
-}
-
-int sendMessage(int sock, string msg) {
-	msg = "MSG:" + msg;
-	return (write(sock, msg.c_str(), msg.length()+1) >= 0);
-}
 

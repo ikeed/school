@@ -8,6 +8,7 @@
 #include <arpa/inet.h>
 
 #include "sox.h"
+#include "mystring.h"
 
 #define BUFLEN 500
 #define HOSTLEN 80
@@ -18,7 +19,7 @@ using namespace std;
 struct Interface {
    string name;
    int sock;
-   string address;
+   string hostname;
    int portNo;
 };
 
@@ -32,7 +33,6 @@ void processIPRequest(string name, Interface *users, int cur, int max);
 void processPostCard(string contents, Interface *users, int cur, int max);
 void processListRequest(Interface *users, int cur, int max);
 void processQuitRequest(Interface *users, int cur, int &max);
-void parse(string buf, string & type, string & contents);
 void showRunning(sockaddr_in server);
 void tearDown(int sock, Interface *users, int userSize);
 
@@ -46,7 +46,7 @@ int main()
 	fd_set read;
 	bool shutdown = false;
 
-	if (!(sock = getListeningSocket(server))) {
+	if (!(sock = getListeningSocket(server, SOCK_STREAM))) {
 		return 1;
 	}
 	showRunning(server);
@@ -96,21 +96,25 @@ bool processCommand(bool &shutdown) {
 }
 
 void processMessage(Interface *users, int cur, int &max) {
-	string msg = socketRead(users[cur].sock);
-	string type, contents;
+	queue<string> msgs = socketRead(users[cur].sock);
+	string msg, type, contents;
 
-	if (msg.length() == 0) {
+	if (msgs.size() == 0) {
 		processQuitRequest(users, cur, max);
 	} else {
-		parse(msg, type, contents);
-		if (type == "PostCard") {
-			processPostCard(contents, users, cur, max);
-		}else if (type == "IPRequest") {
-			processIPRequest(contents, users, cur, max);
-		}else if (type == "List") {
-			processListRequest(users, cur, max);
-		}else if (type == "Quit") {
-			processQuitRequest(users, cur, max);	
+		while (msgs.size()) {
+			msg = msgs.front();
+			msgs.pop();
+    			parse(msg, type, contents);
+			if (type == "PostCard") {
+				processPostCard(contents, users, cur, max);
+			}else if (type == "IPRequest") {
+				processIPRequest(contents, users, cur, max);
+			}else if (type == "List") {
+				processListRequest(users, cur, max);
+			}else if (type == "Quit") {
+				processQuitRequest(users, cur, max);	
+			}
 		}
 	}
 }
@@ -122,10 +126,12 @@ void processIPRequest(string name, Interface *users, int cur, int max) {
 
 	if ((j = findInterfaceByName(users, max, name)) >= 0) {
 		oss << users[j].portNo;
-		addr = users[j].address + " " + oss.str();
+		addr = users[j].hostname + " " + oss.str();
 		addr = "IPRequest " + addr;
 		socketSend(users[cur].sock, addr);
 		//write(users[cur].sock, addr.c_str(), addr.length());
+	}else {
+		socketSend(users[cur].sock, "IPRequest No such user");
 	}
 }
 
@@ -175,7 +181,7 @@ void processQuitRequest(Interface *users, int cur, int &max) {
 }
 
 int findInterfaceByName(Interface *users, int max, string name) {
-    for(int j = 0; j < max; j++) {
+   for(int j = 0; j < max; j++) {
        if (users[j].name == name) {
 		return j;
 	}
@@ -191,8 +197,6 @@ void rejectConnection(int sock, string err) {
 }
 
 int initInterface(Interface *p, int sock, string msg, sockaddr_in server) {
-	char addy[INET_ADDRSTRLEN+1];
-
 	istringstream iss(msg);
 
 	p->sock = sock;
@@ -204,17 +208,16 @@ int initInterface(Interface *p, int sock, string msg, sockaddr_in server) {
 		return 0;
 	}
 
+	iss >> p->hostname;
 	iss >> p->portNo;
 
-	inet_ntop(AF_INET, &(server.sin_addr), addy, INET_ADDRSTRLEN);	
-	p->address = addy;
-	cout << "Added new connection: " << p->address << ":" << p->portNo << " " << p->name << endl;
 	return 1;
 }
 
 
 int addConnection(int sock, Interface *users, int &max, sockaddr_in server) {
 	int newSock;
+	queue<string> v;
 	string msg;
 	int length = sizeof(server);
 
@@ -225,7 +228,8 @@ int addConnection(int sock, Interface *users, int &max, sockaddr_in server) {
 		rejectConnection(newSock, "ERROR: Too many users.  Come back tomorrow.");
 		return 0;
 	}
-	msg = socketRead(newSock);
+	v = socketRead(newSock);
+	msg = v.front();
 	
 	if (!initInterface(&users[max], newSock, msg, server)) {
 		rejectConnection(newSock, "ERROR: Malformed registration request");
@@ -241,18 +245,6 @@ int addConnection(int sock, Interface *users, int &max, sockaddr_in server) {
 	return 1;
 }
 
-void parse(string buf, string & type, string & contents)
-{
-	string line = buf;
-	if (line == "") {
-		type = "";
-		contents = "";
-	} else {
-		istringstream iss(line);
-		iss >> type;
-		contents = iss.str();
-	}
-}
 
 void showRunning(sockaddr_in server) {
 	char host[HOSTLEN+1];

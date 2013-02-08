@@ -1,0 +1,75 @@
+Course: CSCI460
+Instructor: Huizhu Liu
+Student: Craig Burnett
+Assignment: 1
+
+
+Directory Structure:
+~~~~~~~~~~~~~~~~~~~
+
+Is flat.  All relevant files are in the top-level directory.
+
+Installation Instructions:
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To build the executables, simply type 
+
+make
+
+This will produce two executables named 'client' and 'server'.
+
+Execution Instructions:
+~~~~~~~~~~~~~~~~~~~~~~
+
+Start the server first, invoked simply: 
+
+./server
+
+It will produce some output showing the hostname and listening port which it has opened.  
+While the server is running, you can enter the (case-sensitive) command:
+
+shutdown
+
+at any time and the server will sever all connections and exit.
+
+
+Next start a client by invoking:
+
+./client host port name
+
+where host is the hostname of the machine upon which the server is running and 
+port is the tcp port number that the server produced as output.
+
+While the client is running, you can type 'help' at any time which will produce a menu detailing the 
+following (case-sensitive) commands:
+
+	help: to display the help information of the system.
+
+	list: to list the names (only) of all the client programs currently
+		 registered with the server.
+
+	postcard: to send a public message to one or multiple clients. This
+		command will ask user to enter all the receivers' names in a 
+		line separated by spaces and then a one-line message that could 
+		have any ASCII characters in it.  The postcard message would be 
+		sent to the server and let the server pass the message to all the 
+		receivers. Note that it is possible to include one's self as a recipient
+		and the server will happily send you your own message.
+
+	privatemessage: to send a private message to one client program. This 
+		command will ask for one receiver's name and a one-line message 
+		that could have any ASCII characters in it. Then instead of letting
+		the server to relay the message, the sender contacts the server to 
+		get the registered address and port number of the receiver and then 
+		establish a direct connection with the receiver to send the message.
+		These messages are sent via UDP whereas all other packets sent by these
+		executables are sent via TCP.  There is no notion of fragmentation for 
+		private messages.  Since they are one line only, they are meant to be short 
+		enough to fit in one datagram.  There is no length retriction imposed at present.
+
+	quit: to de-register from the server and terminate this client program only
+		. Note that the server should remain running.
+
+..which should hopefully be self-explanatory.
+
+
