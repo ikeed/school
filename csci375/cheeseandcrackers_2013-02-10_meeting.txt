@@ -1,0 +1,408 @@
+[20:54] == _heretic_ [8e196682@gateway/web/freenode/ip.142.25.102.130] has joined #cheeseandcrackers
+[20:55] == cnnrmn [~cnnrmn@S0106602ad07ef197.va.shawcable.net] has joined #cheeseandcrackers
+[20:55] == mode/#cheeseandcrackers [+o _heretic_] by hathawbg
+[20:55] == mode/#cheeseandcrackers [+o cnnrmn] by hathawbg
+[20:55] <@_heretic_> w00+!  1 g0+ 0|)z!
+[20:55] <@hathawbg> haha
+[20:56] == mode/#cheeseandcrackers [-o _heretic_] by hathawbg
+[20:56] <@cnnrmn> awwwww yeeeaaaahhh
+[20:56] <@cnnrmn> pwnd
+[20:56] == mode/#cheeseandcrackers [+v _heretic_] by hathawbg
+[20:56] <@hathawbg> lol
+[20:56] <+_heretic_> NOOOOOOOOOOOOOOOOOOOOOO
+[20:56] <@cnnrmn> what's v?
+[20:56] == mode/#cheeseandcrackers [+o _heretic_] by hathawbg
+[20:56] <@hathawbg> voice
+[20:56] <@_heretic_> voice
+[20:56] <@cnnrmn> oh haha
+[20:56] <@hathawbg> some channels require you to have that
+[20:56] <@hathawbg> to speak
+[20:56] <@cnnrmn> i see
+[20:56] <@hathawbg> useful in big channels but in general no one uses it
+[20:57] <@hathawbg> its also useful if you use it and then give it to everyone by default
+[20:57] <@hathawbg> because then you can devoice people if they are being annoying
+[20:57] <@cnnrmn> sweet
+[20:58] == mrbrown [~mrbrown@S010610bf483e1b9d.no.shawcable.net] has joined #cheeseandcrackers
+[20:58] <mrbrown> hi
+[20:59] <@cnnrmn> hello
+[20:59] == mode/#cheeseandcrackers [+o mrbrown] by hathawbg
+[21:01] <@_heretic_> Firstly, did everybody see this:
+[21:01] <@_heretic_> https://www.evernote.com/shard/s248/sh/6da4b47e-6975-4de8-aae4-769808408e32/da7b6c5bdd3959d5faac541bd7224b22
+[21:03] <@mrbrown> we can relate this to the project...
+[21:03] <@mrbrown> done
+[21:03] <@cnnrmn> lol
+[21:05] <@cnnrmn> alright
+[21:05] <@cnnrmn> pitch things
+[21:06] <@cnnrmn> are we doing the context diagram stuff?
+[21:06] <@cnnrmn> it doesn't say on d2l we need it
+[21:07] <@mrbrown> she said in calss we needed to do the first part
+[21:08] <@cnnrmn> okay
+[21:09] * _heretic_ is just re-reading the evaluation requirements.  brb
+[21:10] <@mrbrown> so what arsame
+[21:10] <@mrbrown> same
+[21:12] <@_heretic_> Do you guys know what a "project charter" is?
+[21:12] <@mrbrown> https://d2l.viu.ca/d2l/le/content/20248/viewContent/149072/View?ou=20248
+[21:13] <@hathawbg> that's not due on tuesday is it ?
+[21:13] <@mrbrown> yeah
+[21:13] <@mrbrown> draft is
+[21:13] <@mrbrown> but easy to divide
+[21:13] <@mrbrown> 3 sectrions
+[21:13] <@mrbrown> which we divide
+[21:13] <@mrbrown> 4th person
+[21:13] <@mrbrown> edits/spell checks
+[21:13] <@mrbrown> and puts them together to insure a least a bit of flow
+[21:14] <@cnnrmn> are we also going to do a power point?
+[21:15] <@mrbrown> yeah
+[21:18] <@cnnrmn> but yeah prezi is good
+[21:20] <@hathawbg> So do we have an idea of which particular thing we'd like to improve on
+[21:20] <@cnnrmn> that is something
+[21:20] <@hathawbg> it seems like we have a few options
+[21:21] <@mrbrown> disciplione/staffing seems big
+[21:21] <@hathawbg> like a) dj training is a bit unorganized
+[21:21] <@hathawbg> b) what mr.brown said
+[21:21] <@cnnrmn> yeah
+[21:21] <@hathawbg> c)advertisements ?
+[21:21] <@_heretic_> they have no real "systems" apart from "Dylan handles it however seems appropriate at the time when things come up"
+[21:21] <@hathawbg> making sure they actually got played and stuff
+[21:21] <@hathawbg> Yeah.
+[21:22] <@cnnrmn> so we can do either one of those
+[21:22] <@hathawbg> So it'll be more like creating a system then improving it
+[21:22] <@hathawbg> is what you're saying?
+[21:22] <@_heretic_> yeah, pretty much.
+[21:23] <@hathawbg> the PCOM thing sounded intresting
+[21:23] <@_heretic_> Of course, any system we design will be pretty much impractical for them to use because Dylan has 0 helpers
+[21:23] <@_heretic_> but that won't stop us!  No siree
+[21:23] <@mrbrown> we push forward
+[21:23] <@_heretic_> Yeah.  Definitely reinstate the PCOm
+[21:23] <@hathawbg> Hmm.
+[21:23] <@mrbrown> no matter how impractical it may be
+[21:24] <@mrbrown> yeah
+[21:24] <@mrbrown> they're main issues are with controlling/training their staff
+[21:24] <@mrbrown> is seems
+[21:24] <@hathawbg> I like the idea of of reorganizing how they keep track of what advertisements are getting played / when etc
+[21:24] <@cnnrmn> That's what I was thinking
+[21:24] <@mrbrown> it would be less abstract
+[21:24] <@hathawbg> I dunno that part about
+[21:25] <@hathawbg> stuffing a bunch of forms into a folder
+[21:25] <@hathawbg> and manually counting
+[21:25] <@hathawbg> seems like it could be improved
+[21:25] <@_heretic_> definitely.
+[21:25] <@cnnrmn> yeah and it could be improved by something we actually know stuff about
+[21:25] <@cnnrmn> I don't know anything about training staff
+[21:25] <@cnnrmn> and such
+[21:25] <@cnnrmn> but databases
+[21:26] <@_heretic_> Their current plan (that didn't make it into my notes, sorry)  is to install something called "RadioBoss" which plays mp3, flac, etc and rips meta-data out, puts it in a log for you.  Ads would be recorded as mp3 and have meta-data inserted to track them.
+[21:26] <@cnnrmn> okay,
+[21:27] <@_heretic_> let's suggest that. Ta-DA!
+[21:27] <@cnnrmn> matt said there was a problem with getting older programmers to rip their physical media and manually input meta data
+[21:27] <@cnnrmn> like they wouldn't want to
+[21:28] <@mrbrown> incentive program?
+[21:28] <@_heretic_> Dylan's response:  Before RadioBoss, they're manually typing their songs into a database.  After RadioBoss, they're manually typing their songs into a database.
+[21:28] <@mrbrown> to get things started
+[21:28] <@cnnrmn> yeah and with the radio boss they'll only have to do it once
+[21:28] <@mrbrown> is radioboss free?
+[21:28] <@cnnrmn> that makes sense
+[21:28] <@_heretic_> I don't think it's free.  To the googles!
+[21:29] <@cnnrmn> couple hundred bucks
+[21:31] <@cnnrmn> they do internet streaming though right?
+[21:31] <@cnnrmn> so they should probably get standard at least
+[21:31] <@_heretic_> they do stream online.
+[21:32] <@cnnrmn> yeah so standard it is
+[21:32] <@mrbrown> cool
+[21:33] <@_heretic_> FWIW, training of staff looked like a good one to pick from a Gantt/Pert perspective.  Would be easy.  Possibly not so good from a recommending improvements perspective.
+[21:33] <@cnnrmn> yeaaahh
+[21:34] <@cnnrmn> but the advertising one seems harder from gantt/pert
+[21:35] <@_heretic_> I'm going to do training for my lab 4.  We should probably do the database thing for our pitch though, eh?
+[21:35] <@hathawbg> hold on
+[21:35] <@hathawbg> isnt gantt/pert
+[21:35] <@hathawbg> supposed to be a thing for us
+[21:35] <@hathawbg> like our schedule?
+[21:35] <@hathawbg> rather i mean like
+[21:35] <@hathawbg> the schedule for
+[21:35] <@hathawbg> improving the system
+[21:36] <@hathawbg> or have i misunderstood what theyre fore
+[21:36] <@_heretic_> I think so.
+[21:36] <@cnnrmn> I thought it was used to analyze the current system and then you would improve it by moving times around?
+[21:36] <@_heretic_> ^ that
+[21:36] <@cnnrmn> okay
+[21:36] <@hathawbg> ???
+[21:36] <@hathawbg> really?
+[21:36] <@cnnrmn> that's what I felt like she was saying
+[21:36] <@cnnrmn> haha
+[21:36] <@hathawbg> My impression is that it was a project deadline thing
+[21:36] <@_heretic_> like the shipyard thing from lab 3
+[21:37] <@_heretic_> it is a project deadline thing.
+[21:37] <@hathawbg> so like
+[21:37] <@hathawbg> we would make one for
+[21:37] <@hathawbg> implementing the new database
+[21:37] <@hathawbg> i.e
+[21:37] <@hathawbg> before we can put the songs in
+[21:37] <@hathawbg> we have to convert them to flac
+[21:37] <@hathawbg> and before we can do that
+[21:37] <@_heretic_> zacly
+[21:37] <@hathawbg> we have to talk with all the djs
+[21:37] <@hathawbg> etc
+[21:38] <@hathawbg> so we're on the same page and im just confused?
+[21:38] <@hathawbg> :D
+[21:38] <@mrbrown> ok
+[21:38] <@_heretic_> one of the issues is that some DJs are still spinning vinyl.  They're probably not going to be too keen on digitizing their entire record collection.
+[21:38] <@hathawbg> ahhh
+[21:39] <@mrbrown> hmm, probably a dealbreaker for some even
+[21:39] <@cnnrmn> I don't know if I'm more or less confused now
+[21:39] <@hathawbg> thats good
+[21:39] <@cnnrmn> is it
+[21:39] <@cnnrmn> lol
+[21:39] <@_heretic_> The station manager's response was that this new system wouldn't really improve anything for them; but neither would it hurt them.  They would still be typing stuff in, as before.
+[21:39] <@hathawbg> problems = things to talk about
+[21:39] <@hathawbg> right
+[21:39] <@hathawbg> but it would help management right?
+[21:39] <@cnnrmn> but after they've digitized a record they don't have to do it again
+[21:40] <@cnnrmn> so it's still and improvement for them right?
+[21:40] <@_heretic_> Some of these guys are in their 80's.  Literally.
+[21:40] <@hathawbg> :p
+[21:40] <@hathawbg> is that gonna be one of our risks?
+[21:40] <@_heretic_> Not into your digital whatchamajiggits.
+[21:40] <@cnnrmn> lol
+[21:40] <@cnnrmn> so the fact they have to use technology kind of evens it out
+[21:41] <@cnnrmn> "advanced" technology*
+[21:41] <@hathawbg> this is sounding decent
+[21:41] <@mrbrown> yeah
+[21:41] <@mrbrown> starting to shape up
+[21:42] <@cnnrmn> have you guys done lab 4
+[21:43] <@mrbrown> tommorow
+[21:43] <@mrbrown> i will
+[21:43] <@_heretic_> Ok, so we have a pitch to do in two days.  We're going to need talking points.  We're going to need preziness.  We're going to need to divide up the work.
+[21:43] <@cnnrmn> yeah
+[21:44] <@mrbrown> ok
+[21:44] <@_heretic_> right then
+[21:44] <@cnnrmn> all the talking points are in the instructions
+[21:44] <@cnnrmn> for the pitch
+[21:45] <@mrbrown> there are 4
+[21:45] <@cnnrmn> yes
+[21:45] <@_heretic_> shotty #1!
+[21:45] <@mrbrown> 3
+[21:45] <@cnnrmn> hahaha
+[21:45] <@cnnrmn> hold on
+[21:45] <@cnnrmn> there is 2 3's
+[21:45] <@hathawbg> he gets both
+[21:45] <@mrbrown> darn it
+[21:45] <@mrbrown> 2
+[21:45] <@cnnrmn> hahahhaa
+[21:46] <@cnnrmn> there's actually 5 talking points
+[21:46] <@_heretic_> five!  five is the number of instructions!
+[21:46] <@mrbrown> ?
+[21:47] <@cnnrmn> i guess
+[21:47] <@cnnrmn> 1) Describe client and team
+[21:47] <@cnnrmn> hahaha
+[21:47] <@cnnrmn> i was going to write them all out because I can't copy from the stupid pdf
+[21:48] <@_heretic_> This is just a 10-minute talk eh?
+[21:48] <@mrbrown> yeah something like tha
+[21:48] <@mrbrown> t
+[21:49] <@cnnrmn> hahahh oh yeah
+[21:49] <@cnnrmn> this should be easy then
+[21:49] <@cnnrmn> 5 slides?
+[21:49] <@cnnrmn> maybe 6?
+[21:49] <@cnnrmn> or one for each minute?
+[21:49] <@hathawbg> 7 with title page and conclusion
+[21:49] <@mrbrown> yeah
+[21:49] <@hathawbg> if we need a conclusion even
+[21:49] <@cnnrmn> okay sweet
+[21:49] <@hathawbg> but title page yeah
+[21:49] <@mrbrown> so which mecchanisms do we need to include in the slides exactly:
+[21:50] <@mrbrown> do we need gantt or not?
+[21:50] <@mrbrown> i know we need that xontext diagram thing
+[21:50] <@hathawbg> i'm not sure actually
+[21:50] <@_heretic_> We need it for lab 4
+[21:50] <@mrbrown> oh ok
+[21:50] <@mrbrown> that makes sence
+[21:50] <@mrbrown> sorry iw as still confused
+[21:50] <@cnnrmn> well the context diagram is for the project charter
+[21:50] <@mrbrown> ;p
+[21:50] <@cnnrmn> isn't it?
+[21:50] <@mrbrown> yeah
+[21:51] <@hathawbg> oh is it ?
+[21:51] <@cnnrmn> I thought that's what we said
+[21:51] <@cnnrmn> earlier lol
+[21:52] <@_heretic_> and that's also due tuesday, yes?
+[21:52] <@cnnrmn> yeah just a draft
+[21:52] <@mrbrown> yeah
+[21:53] <@_heretic_> This is the part where people start volounteering for stuff.  
+[21:53] <@_heretic_> I'll do the charter.
+[21:53] <@hathawbg> i will do the prezi
+[21:53] <@cnnrmn> the whole thing?
+[21:54] <@cnnrmn> isn't the charter the bigger of the tasks
+[21:54] <@_heretic_> Is it big?  
+[21:54] <@hathawbg> its just a draft
+[21:54] <@hathawbg> haha
+[21:54] <@cnnrmn> I got that feeling but maybe it's just because of the pdf
+[21:54] <@cnnrmn> it seems to have a lot of parts to it
+[21:54] <@mrbrown> its pretty big
+[21:54] <@mrbrown> i could do part of the charter/the contrext diagram
+[21:56] <@cnnrmn> is this the part that is the context diagram?
+[21:56] <@cnnrmn> Context – cites the project within an organization and provides high level background information.
+[21:57] <@cnnrmn> like is that what that point is referring too
+[21:57] <@mrbrown> i think so
+[21:57] <@hathawbg> ok
+[21:57] <@hathawbg> so
+[21:57] <@mrbrown> its not a ton of work
+[21:57] <@hathawbg> for lab4
+[21:57] <@hathawbg> stakeholders
+[21:57] <@hathawbg> Dylan
+[21:57] <@hathawbg> arby
+[21:57] <@hathawbg> (i guess)
+[21:57] <@cnnrmn> listeners, board members
+[21:57] <@cnnrmn> programmers
+[21:57] <@hathawbg> perfect
+[21:57] <@_heretic_> Dylan+Arbie = "management"
+[21:57] <@mrbrown> advertizers
+[21:58] <@cnnrmn> ooohhh advertisers yeah
+[21:58] <@_heretic_> VIU students as well  (did you know a chunk of your student fees goes to CHLY?)
+[21:58] <@cnnrmn> okay so management, listeners, board members, programmers, and advertisers
+[21:58] <@cnnrmn>  okay so management, listeners, board members, programmers, advertisers, and VIU Students
+[21:59] <@hathawbg> we are improving two current activities they have according to lab4. they are A) Training new programmers and B) databasing the stuff
+[21:59] <@_heretic_> also the community at large.  CHLY does a lot of community outreach, etc.
+[21:59] <@cnnrmn> okay so everyone
+[21:59] <@hathawbg> right?
+[21:59] <@_heretic_> [x] Agree     [_] Disagree
+[22:00] <@mrbrown> x
+[22:00] <@hathawbg> sweet
+[22:00] <@hathawbg> hmm
+[22:00] <@hathawbg> the next part of the lab mentions work items
+[22:00] <@hathawbg> I assuming this means the individual parts of the Pert/Gant
+[22:01] <@hathawbg> i.e steps to improving these activities
+[22:01] <@mrbrown> soundsa bout right
+[22:01] <@cnnrmn> what else is there to do other than the prezi and the charter?
+[22:02] <@cnnrmn> we need to split up the charter I think
+[22:02] <@mrbrown> thats it
+[22:02] <@_heretic_> I thought work items were "rip CD to mp3"  and "install database"
+[22:02] <@cnnrmn> yeah
+[22:02] <@hathawbg> right
+[22:02] <@hathawbg> exactly
+[22:02] <@_heretic_> ok then
+[22:02] <@hathawbg> and we to estimate how long each of those things is going to take
+[22:02] <@hathawbg> ~_~
+[22:03] <@_heretic_> ok, I'll do section 3 of the charter
+[22:03] <@cnnrmn> do we estimate how long it takes to rip the entire collection of music? or how long it takes to rip one because 1 can be added to the database right away
+[22:04] <@cnnrmn> rip one album*
+[22:04] <@mrbrown> i can do 2
+[22:04] <@_heretic_> They literally have an infinite collection of music.
+[22:04] <@cnnrmn> i'll do one then
+[22:04] <@hathawbg> lol
+[22:04] <@cnnrmn> perfect
+[22:04] <@cnnrmn> okay so
+[22:04] <@cnnrmn> one
+[22:04] <@cnnrmn> for the tip
+[22:04] <@cnnrmn> rip
+[22:04] <@_heretic_> More CDs arrive every day.  Plus: Internet
+[22:04] <@hathawbg> the work item should be something like
+[22:04] * _heretic_ is waiting for somebody to read 3
+[22:04] <@hathawbg> i have no clue
+[22:04] <@cnnrmn> yeah so we estimate how long it takes to rip one cd to MP3
+[22:04] <@hathawbg> start an infinite ammount of work
+[22:05] <@cnnrmn> read 3?
+[22:05] <@hathawbg> hahaha
+[22:05] <@cnnrmn> oh
+[22:05] <@hathawbg> i love it
+[22:05] <@cnnrmn> lol
+[22:05] <@mrbrown> lol
+[22:05] <@mrbrown> i read it
+[22:05] <@mrbrown> i was cool with it
+[22:06] <@mrbrown> you sorta did alot of the interviews
+[22:06] <@_heretic_> no, I think I'll do a little more than names and blanks.
+[22:06] <@cnnrmn> How long do you think it has to be? it's a draft so it can pretty much be point form right?
+[22:06] <@mrbrown> lol
+[22:06] <@mrbrown> cool
+[22:06] <@hathawbg> yeah a sentance or two per should be fine
+[22:06] <@hathawbg> nothing big
+[22:07] <@cnnrmn> okay
+[22:07] <@cnnrmn> sweet
+[22:07] <@cnnrmn> yeah I can do the first part then
+[22:07] <@cnnrmn> I could have done it anyways
+[22:07] <@_heretic_> I'd say
+[22:07] <@hathawbg> doesnt seem like there is really that much work
+[22:07] <@_heretic_> ..what hathawbg just said
+[22:07] <@hathawbg> I mean its really a 10 minute presentation..
+[22:07] <@hathawbg> xD
+[22:07] <@hathawbg> but yeah
+[22:07] <@cnnrmn> i just want you all to know I wasn't saying I wouldn't have done it if it was hard
+[22:07] <@hathawbg> we should meet up during the
+[22:07] <@hathawbg> normal lab slot
+[22:08] <@cnnrmn> i hope you all know that
+[22:08] <@cnnrmn> lol
+[22:08] <@hathawbg> and maybe just do a dry run
+[22:08] <@mrbrown> yeah
+[22:08] <@mrbrown> make sure everyones on board
+[22:08] <@cnnrmn> yeah k
+[22:08] <@_heretic_> who are you trying to convince, us or you?
+[22:08] <@hathawbg> me
+[22:08] <@hathawbg> lol
+[22:08] <@cnnrmn> yeah specifically brandon
+[22:08] <@_heretic_> was talking to cnnrmn but ok
+[22:08] <@hathawbg> oh
+[22:08] <@cnnrmn> hshshshs
+[22:08] <@cnnrmn> hahahaha*
+[22:09] <@hathawbg> well I NEEDED CONVINCING
+[22:09] <@hathawbg> lol
+[22:09] <@hathawbg> not really
+[22:09] <@hathawbg> Good meeting sirs
+[22:09] <@_heretic_> wait!
+[22:09] <@hathawbg> !waiting
+[22:09] <@_heretic_> what did I end up working on?
+[22:09] <@hathawbg> oh
+[22:09] <@mrbrown> hmm
+[22:10] <@hathawbg> you're doing the choreography
+[22:10] <@_heretic_> Connor: Charter::Section1
+[22:10] <@_heretic_> Brandon:  prezi?
+[22:10] <@hathawbg> yeah
+[22:10] <@cnnrmn> ooohhhh we're doing a dance number?
+[22:10] <@hathawbg> lol
+[22:10] <@mrbrown> are we coordinating
+[22:10] <@mrbrown> dresscode
+[22:11] <@_heretic_> whole classroom covered in glitter afterwards.  
+[22:11] <@mrbrown> i say all burgandy
+[22:11] <@hathawbg> >.< i was planning on wearing burgandy actually
+[22:11] <@hathawbg> but now i might not
+[22:11] <@hathawbg> XD
+[22:11] <@cnnrmn> I'm not sure I have anything in burgandy
+[22:11] <@cnnrmn> but how are we splitting up the charter
+[22:11] <@cnnrmn> so that we all have something to do
+[22:11] <@_heretic_> Dres code: Just look nice.  
+[22:11] <@mrbrown> ok
+[22:12] <@cnnrmn> it's cool if you want to just do 3 craig since you did most of the interviewing
+[22:12] <@cnnrmn> you did the interviews with the really important people
+[22:12] <@hathawbg> super super important
+[22:12] <@hathawbg> :D
+[22:13] <@_heretic_> Charter::Section2::Team organization and roles – a list of the team members and their roles on this project.   <- one person can't really do that.  requires discussion
+[22:13] <@cnnrmn> okay so on tuesday before hand
+[22:13] <@_heretic_> meh, it's a draft
+[22:13] <@hathawbg> we could just
+[22:13] <@hathawbg> pound it out right now
+[22:13] <@cnnrmn> should we just meet and finalize it?
+[22:13] <@hathawbg> but i feel like i'm getting restless
+[22:13] <@cnnrmn> oh okay
+[22:13] <@hathawbg> lol
+[22:13] <@cnnrmn> wait do not right now?
+[22:13] <@cnnrmn> lol
+[22:14] <@mrbrown> restless to do it
+[22:14] <@mrbrown> or trestless to not
+[22:14] <@hathawbg> it is just a draft though
+[22:14] <@mrbrown> also if one person cant do section2
+[22:14] <@mrbrown> what am i doing?
+[22:14] <@cnnrmn> yeah
+[22:14] <@hathawbg> i'll be on irc tommorow all day
+[22:14] <@hathawbg> if someone wants to tell me something
+[22:15] <@_heretic_> I'll keep irc running on my phone tomorrow.
+[22:15] <@cnnrmn> i'll be on in the evening
+[22:15] <@cnnrmn> after I get back from van
+[22:15] <@_heretic_> Can I edit the final copy?
+[22:15] <@cnnrmn> that works
+[22:15] <@_heretic_> cool.
+[22:15] <@hathawbg> cool, why don't we just meet in here sometime tommorow night and check over eachother stuff
+[22:15] <@_heretic_> I have purpose
+[22:16] <@cnnrmn> okay yeah
+[22:16] <@mrbrown> ok
+[22:16] <@_heretic_> email might be better (asynchronous FTW)
+[22:16] <@hathawbg> hathawbg@otter.csci.viu.ca
+[22:16] <@hathawbg> :D
+[22:16] <@_heretic_> but whatever.  I'll pay attention to both.
+
